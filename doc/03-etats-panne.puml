@@ -1,0 +1,45 @@
+@startuml SIM-BIOMED_Etats_Panne
+skinparam state {
+  BackgroundColor White
+  BorderColor #1F3864
+  ArrowColor #444444
+}
+
+[*] --> Signalé : signaler(equipement, symptôme)
+
+state "Signalé" as Signale
+state "Qualifié" as Qualifie
+state "Criticité évaluée" as Criticite
+state "En diagnostic" as Diagnostic
+state "En intervention" as Intervention
+state "En test / contrôle" as Test
+state "Clôturé" as Clos
+state "En attente pièce / prestataire" as Attente
+state "Hors service / réformé" as HS
+
+Signale --> Qualifie : qualifier(nature, gravité, urgence)
+Qualifie --> Criticite : évaluerCriticité()
+Criticite --> Diagnostic : prioriser()
+Diagnostic --> Intervention : cause confirmée
+Intervention --> Test : actions enregistrées
+Intervention --> Attente : pièce ou prestataire requis
+Attente --> Intervention : pièce reçue / prestataire intervenu
+Test --> Clos : résultat = CONFORME
+Test --> Diagnostic : résultat = NON CONFORME / TOUJOURS EN PANNE
+Test --> Attente : réparation impossible (pièce manquante)
+Test --> HS : équipement irréparable
+Clos --> [*]
+
+note right of Test
+  Résultats possibles :
+  - Conforme
+  - Fonctionnel sous surveillance
+  - Non conforme
+  - Toujours en panne
+end note
+
+note bottom of Criticite
+  Niveaux : Critique / Élevé / Moyen / Faible
+  Prise en compte de l'impact sur les soins
+end note
+@enduml

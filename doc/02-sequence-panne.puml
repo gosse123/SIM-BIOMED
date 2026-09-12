@@ -1,0 +1,54 @@
+@startuml SIM-BIOMED_Sequence_Panne
+skinparam sequenceArrowThickness 2
+skinparam participantPadding 20
+
+actor "Personnel soignant" as soignant
+participant "Application mobile" as app
+participant "API Gateway" as api
+participant "Service Gestion\ndes Pannes" as panneSvc
+participant "Service Criticité\n& Priorisation" as prioSvc
+participant "Service Équipements" as eqSvc
+participant "Service Indicateurs" as indSvc
+participant "Service Alertes" as altSvc
+actor "Technicien" as tech
+
+== 1. Signalement ==
+soignant -> app : signalePanne(equipement, symptôme)
+app -> api : POST /pannes
+api -> panneSvc : créerPanne()
+panneSvc -> eqSvc : vérifierEquipement()
+eqSvc --> panneSvc : équipement (OK)
+panneSvc --> api : panne créée (statut = SIGNALÉ)
+api --> app : confirmation
+app --> soignant : accusé de réception
+
+== 2. Qualification & criticité ==
+respNote note over panneSvc : Responsable biomédical
+panneSvc -> panneSvc : qualifier(nature, type, gravité, urgence, impact)
+panneSvc -> prioSvc : évaluerCriticité(panne)
+prioSvc --> panneSvc : criticite (CRITIQUE)
+panneSvc -> prioSvc : calculerPriorité()
+prioSvc --> panneSvc : priorité = 1
+
+== 3. Diagnostic ==
+tech -> api : GET /file-priorisée
+api --> tech : interventions ordonnées
+tech -> panneSvc : enregistrerDiagnostic(cause confirmée)
+panneSvc --> tech : OK (statut = EN_INTERVENTION)
+
+== 4. Intervention ==
+tech -> panneSvc : enregistrerIntervention(actions, pièces)
+panneSvc -> eqSvc : mettre à jour statut opérationnel (🔵 maintenance)
+
+== 5. Test & contrôle ==
+tech -> panneSvc : enregistrerRésultatTest(CONFORME)
+panneSvc -> eqSvc : remise en service (🟢 fonctionnel)
+
+== 6. Clôture, historique & indicateurs ==
+panneSvc -> panneSvc : clôturer()
+panneSvc -> indSvc : recalculerIndicateurs(equipement)
+indSvc --> panneSvc : MTBF, MTTR, disponibilité
+panneSvc -> altSvc : notifier clôture
+altSvc --> soignant : équipement de nouveau disponible
+
+@enduml

@@ -1,0 +1,70 @@
+@startuml SIM-BIOMED_CasUtilisation
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+
+actor "Personnel\nsoignant" as soignant
+actor "Technicien\nbiomédical" as tech
+actor "Responsable\nbiomédical" as resp
+actor "Direction" as dir
+actor "Prestataire\nexterne" as prest
+
+rectangle "SIM-BIOMED" {
+
+  package "Gestion du parc" {
+    usecase "Consulter le parc" as UC1
+    usecase "Enregistrer un équipement" as UC2
+    usecase "Suivre le cycle de vie" as UC3
+    usecase "Transférer / réformer" as UC4
+  }
+
+  package "Gestion des pannes" {
+    usecase "Signaler une panne" as UC5
+    usecase "Qualifier la panne" as UC6
+    usecase "Évaluer la criticité" as UC7
+    usecase "Diagnostiquer" as UC8
+    usecase "Intervenir" as UC9
+    usecase "Tester et contrôler" as UC10
+    usecase "Clôturer / remettre en service" as UC11
+  }
+
+  package "Maintenance préventive" {
+    usecase "Planifier la maintenance" as UC12
+    usecase "Suivre les échéances" as UC13
+  }
+
+  package "Pilotage" {
+    usecase "Consulter les indicateurs\n(MTBF, MTTR, disponibilité)" as UC14
+    usecase "Prioriser les interventions" as UC15
+    usecase "Consulter les alertes" as UC16
+    usecase "Recevoir des recommandations" as UC17
+  }
+}
+
+soignant --> UC1
+soignant --> UC5
+tech --> UC8
+tech --> UC9
+tech --> UC10
+tech --> UC13
+tech --> UC15
+resp --> UC2
+resp --> UC3
+resp --> UC4
+resp --> UC6
+resp --> UC7
+resp --> UC11
+resp --> UC12
+resp --> UC16
+dir --> UC1
+dir --> UC14
+dir --> UC17
+prest --> UC9
+
+UC5 ..> UC6 : <<include>>
+UC6 ..> UC7 : <<include>>
+UC9 ..> UC10 : <<include>>
+UC10 ..> UC11 : <<include>>
+UC15 ..> UC7 : <<extend>>
+UC17 ..> UC14 : <<extend>>
+@enduml

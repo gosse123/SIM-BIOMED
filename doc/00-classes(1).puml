@@ -1,0 +1,119 @@
+@startuml SIM-BIOMED_Classes
+skinparam class {
+  BackgroundColor White
+  ArrowColor #444444
+  BorderColor #1F3864
+}
+
+class Equipement {
+  - id : int
+  - nom : string
+  - type : string
+  - categorie : string
+  - marque : string
+  - modele : string
+  - numSerie : string
+  - numInventaire : string
+  - dateReception : date
+  - dateInstallation : date
+  - dateMiseService : date
+  - etatOperationnel : StatutOp
+  - niveauCriticite : Criticite
+  - statutCycleVie : CycleVie
+  + calculerIndicateurs()
+  + evaluerCriticite()
+}
+
+class ServiceUtilisateur { - nom : string }
+class Localisation { - batiment : string - salle : string }
+
+class Evenement {
+  - type : TypeEvenement
+  - sousType : string
+  - date : datetime
+  - auteur : string
+  - description : texte
+}
+
+class Panne {
+  - dateSignalement : datetime
+  - symptome : texte
+  - nature : string
+  - gravite : Gravite
+  - urgence : Urgence
+  - impactSoins : Impact
+  - criticite : Criticite
+  - priorite : int
+  - statut : StatutPanne
+  + qualifier()
+  + evaluerCriticite()
+  + calculerPriorite()
+  + cloturer()
+}
+
+class Diagnostic {
+  - date : datetime
+  - causeProbable : texte
+  - causeConfirmee : texte
+  - elementsDefectueux : string[]
+}
+
+class Intervention {
+  - dateDebut : datetime
+  - dateFin : datetime
+  - type : TypeIntervention
+  - actions : texte
+  - resultatTest : ResultatTest
+  - statutFinal : StatutFinal
+  + enregistrerPiece()
+  + tester()
+  + cloturer()
+}
+
+class MaintenancePreventive {
+  - type : TypeMaint
+  - periodicite : duree
+  - derniereRealisation : date
+  - prochaineEcheance : date
+  - etat : EtatPrev
+  + mettreAJourEtat()
+}
+
+class Indicateur {
+  - periode : Periode
+  - mtbf : duree
+  - mttr : duree
+  - disponibilite : float
+  - indisponibilite : float
+  - tauxPanne : float
+  + calculer()
+}
+
+class Alerte { - type : TypeAlerte - severite : Severite - statut : StatutAlerte }
+class PieceRechange { - reference : string - stock : int - seuilAlerte : int }
+class Technicien { - competences : string[] + diagnostiquer() + intervenir() }
+class Prestataire { - specialite : string }
+class PersonnelSoignant { + signalerPanne() }
+class AuditLog { - utilisateur : string - action : string - horodatage : datetime }
+
+ServiceUtilisateur "1" -- "1..*" Equipement : utilise >
+Localisation "1" -- "1..*" Equipement : situe >
+Equipement "1" -- "0..*" Evenement : concerne >
+Equipement "1" -- "0..*" Panne : subit >
+Equipement "1" -- "0..*" MaintenancePreventive
+Equipement "1" -- "0..*" Indicateur
+Equipement "1" -- "0..*" Alerte
+PersonnelSoignant "1" -- "0..*" Panne : declare >
+Panne "1" -- "0..*" Diagnostic
+Panne "1" -- "1..*" Intervention
+Technicien "1" -- "0..*" Diagnostic : realise >
+Technicien "1" -- "0..*" Intervention
+Prestataire "0..1" -- "0..*" Intervention : intervient >
+Intervention "0..*" -- "0..*" PieceRechange : consomme >
+(InterventionPiece) .. Intervention
+(InterventionPiece) .. PieceRechange
+Intervention ..> AuditLog : trace
+Panne ..> AuditLog : trace
+
+note right of InterventionPiece : quantite : int
+@enduml
