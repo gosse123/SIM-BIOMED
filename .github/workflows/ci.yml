@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install ruff
+      - run: ruff check backend/
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: cd frontend && npm ci
+      - run: cd frontend && npm run lint
+
+  test-backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: simbiomed_test
+          POSTGRES_USER: simbiomed
+          POSTGRES_PASSWORD: test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r backend/requirements.txt
+      - run: cd backend && pytest tests/ -v
+        env:
+          DATABASE_URL: postgres://simbiomed:test@localhost:5432/simbiomed_test
+          DJANGO_SECRET_KEY: test-secret
+          DJANGO_SETTINGS_MODULE: config.settings.development
+
+  test-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: cd frontend && npm ci
+      - run: cd frontend && npm run test

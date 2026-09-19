@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={"darkMode":"class","theme":{"extend":{"colors":{"secondary-fixed-dim":"#bec6e0","on-primary":"#ffffff","surface":"#f8f9ff","on-secondary-container":"#5c647a","on-tertiary-fixed":"#001f26","secondary-fixed":"#dae2fd","on-surface":"#0b1c30","surface-container-lowest":"#ffffff","tertiary-fixed":"#acedff","primary-container":"#007bb9","on-surface-variant":"#3f4850","surface-container":"#e5eeff","error":"#ba1a1a","secondary-container":"#dae2fd","surface-variant":"#d3e4fe","on-primary-fixed-variant":"#004b73","error-container":"#ffdad6","secondary":"#565e74","background":"#f8f9ff","on-error-container":"#93000a","inverse-on-surface":"#eaf1ff","surface-container-low":"#eff4ff","on-tertiary":"#ffffff","on-secondary-fixed-variant":"#3f465c","surface-container-highest":"#d3e4fe","on-secondary-fixed":"#131b2e","on-error":"#ffffff","outline-variant":"#bfc7d2","primary-fixed":"#cce5ff","surface-bright":"#f8f9ff","on-secondary":"#ffffff","surface-tint":"#006398","on-primary-container":"#fdfcff","tertiary":"#006577","outline":"#707881","tertiary-fixed-dim":"#4cd7f6","primary":"#006194","on-tertiary-fixed-variant":"#004e5c","on-primary-fixed":"#001d31","tertiary-container":"#008096","surface-dim":"#cbdbf5","primary-fixed-dim":"#93ccff","on-tertiary-container":"#f9fdff","surface-container-high":"#dce9ff","inverse-surface":"#213145","inverse-primary":"#93ccff","on-background":"#0b1c30"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"space-md":"0.75rem","margin":"1rem","gutter-desktop":"1.5rem","space-xl":"2rem","margin-desktop":"2rem","space-xs":"0.25rem","gutter":"1rem","space-lg":"1.25rem","space-sm":"0.5rem"},"fontFamily":{"label-lg":["Inter"],"body-lg":["Inter"],"label-sm":["Inter"],"headline-md":["Inter"],"headline-sm":["Inter"],"body-sm":["Inter"],"body-md":["Inter"],"label-md":["Inter"],"headline-xl":["Inter"],"headline-lg":["Inter"],"headline-xl-mobile":["Inter"],"headline-lg-mobile":["Inter"]},"fontSize":{"label-lg":["0.875rem",{"lineHeight":"1.25rem","fontWeight":"600"}],"body-lg":["1rem",{"lineHeight":"1.5rem","fontWeight":"400"}],"label-sm":["0.6875rem",{"lineHeight":"0.875rem","letterSpacing":"0.03em","fontWeight":"600"}],"headline-md":["1.25rem",{"lineHeight":"1.75rem","fontWeight":"600"}],"headline-sm":["1rem",{"lineHeight":"1.5rem","fontWeight":"600"}],"body-sm":["0.75rem",{"lineHeight":"1.125rem","fontWeight":"400"}],"body-md":["0.875rem",{"lineHeight":"1.375rem","fontWeight":"400"}],"label-md":["0.75rem",{"lineHeight":"1rem","letterSpacing":"0.02em","fontWeight":"600"}],"headline-xl":["2rem",{"lineHeight":"2.5rem","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.01em","fontWeight":"600"}],"headline-xl-mobile":["1.5rem",{"lineHeight":"2rem","letterSpacing":"-0.015em","fontWeight":"700"}],"headline-lg-mobile":["1.25rem",{"lineHeight":"1.75rem","letterSpacing":"-0.01em","fontWeight":"600"}]}}}};</script></head><body class="bg-background font-body-md text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col h-full"><div class="h-16 px-space-md flex items-center justify-between border-b border-outline/20"><div class="flex items-center gap-space-sm"><img alt="SIM-BIOMED Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1WJAMkpR50mGlufwGVb8TtVPnBwoQN3BqzYwxfzLCRkxY4Yggs1PBmVH0L62H5-q5XU7MDOV0rQAFEvUAAPDW1gDaXDWGfv3OvOhP9Bqv8TP2Zn9olYyqcflB0iSEi1NOVVoqgH0uXmy_BEhlQWkKUTXGSWpD8lh5OZt3P9bkVjSdiOH4_Wbp9HybQE4Qd-JrKyUu4V_6LGABDMdMwsgcD6PwewjWQGsCdoC_zJBPtIy8BtV8ElHFjdEkA5"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-inverse-on-surface tracking-tight leading-none">SIM-BIOMED</span><span class="font-body-sm text-[10px] text-outline-variant tracking-wider uppercase leading-tight">GMAO Clinique</span></div></div><span class="px-1.5 py-0.5 rounded bg-tertiary-container text-on-tertiary-container font-label-sm text-label-sm">v2.4</span></div><div class="flex-1 overflow-y-auto py-space-sm px-space-xs"><div class="px-space-sm py-space-xs font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Supervision</div><nav class="space-y-0.5" data-active-classes="bg-primary-container text-on-primary-container font-label-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="tableau-de-bord" href="#"><span class="material-symbols-outlined text-[20px]">dashboard</span>Tableau de bord</a></nav><div class="mt-space-md px-space-sm py-space-xs font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Inventaire Technique</div><nav class="space-y-0.5" data-active-classes="bg-primary-container text-on-primary-container font-label-md"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg transition-colors bg-primary-container text-on-primary-container font-label-md" data-path="parc-equipements" href="#"><span class="material-symbols-outlined text-[20px]">medical_services</span>Équipements</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="parc-services" href="#"><span class="material-symbols-outlined text-[20px]">local_hospital</span>Services de soins</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="parc-localisations" href="#"><span class="material-symbols-outlined text-[20px]">apartment</span>Localisations</a></nav><div class="mt-space-md px-space-sm py-space-xs font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Opérations GMAO</div><nav class="space-y-0.5" data-active-classes="bg-primary-container text-on-primary-container font-label-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="pannes-et-signalements" href="#"><span class="material-symbols-outlined text-[20px]">report_problem</span>Pannes &amp; Signalements</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="file-interventions" href="#"><span class="material-symbols-outlined text-[20px]">build_circle</span>File d'interventions</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="maintenance-preventive" href="#"><span class="material-symbols-outlined text-[20px]">event_repeat</span>Maint. préventive</a></nav><div class="mt-space-md px-space-sm py-space-xs font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Contrôle &amp; Qualité</div><nav class="space-y-0.5" data-active-classes="bg-primary-container text-on-primary-container font-label-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="indicateurs-et-analyses" href="#"><span class="material-symbols-outlined text-[20px]">query_stats</span>Indicateurs MTBF/MTTR</a><a class="flex items-center justify-between px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="alertes-critiques" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[20px]">notifications_active</span>Alertes</div><span class="px-1.5 py-0.2 bg-error text-on-error font-label-sm text-label-sm rounded-full">3</span></a></nav><div class="mt-space-md px-space-sm py-space-xs font-label-sm text-label-sm text-outline-variant uppercase tracking-wider">Système</div><nav class="space-y-0.5" data-active-classes="bg-primary-container text-on-primary-container font-label-md"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="utilisateurs-et-roles" href="#"><span class="material-symbols-outlined text-[20px]">manage_accounts</span>Utilisateurs &amp; Rôles</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="journal-daudit" href="#"><span class="material-symbols-outlined text-[20px]">history</span>Journal d'audit</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded-lg text-inverse-on-surface hover:bg-surface-variant/20 hover:text-on-primary transition-colors font-body-md text-body-md" data-path="parametres-systeme" href="#"><span class="material-symbols-outlined text-[20px]">tune</span>Paramètres</a></nav></div><div class="p-space-sm border-t border-outline/20 bg-inverse-surface"><div class="flex items-center justify-between"><div class="flex items-center gap-space-sm min-w-0"><div class="relative flex-shrink-0"><div class="w-9 h-9 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[20px]">person</span></div><span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-tertiary-fixed ring-2 ring-inverse-surface"></span></div><div class="flex flex-col min-w-0"><span class="font-label-md text-label-md text-inverse-on-surface truncate">Ing. Léa Dubois</span><span class="font-body-sm text-[11px] text-outline-variant truncate">Resp. Biomédical CHU</span></div></div><a class="p-1.5 rounded text-outline-variant hover:text-on-error hover:bg-error/20 transition-colors" data-path="deconnexion" href="#"><span class="material-symbols-outlined text-[20px]">logout</span></a></div></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-16 bg-surface/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 px-gutter-desktop flex items-center justify-between border-b border-surface-container"><div class="flex items-center gap-space-lg flex-1 max-w-2xl"><div class="relative flex-1"><span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span><input class="w-full pl-10 pr-space-md py-1.5 rounded-lg bg-surface-container-lowest border border-outline-variant/60 font-body-md text-body-md text-on-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Rechercher équipement (N° inv, série, désignation, service)..." type="search"/></div><div class="flex items-center gap-space-xs px-3 py-1.5 rounded-lg bg-surface-container-low border border-outline-variant/40"><span class="material-symbols-outlined text-tertiary text-[18px]">domain</span><select class="bg-transparent font-label-md text-label-md text-on-surface focus:outline-none cursor-pointer"><option>Site Central - Hôpital Nord</option><option>Pôle Femme-Mère-Enfant</option><option>Pavillon Urgences &amp; Réanimation</option></select></div></div><div class="flex items-center gap-space-md"><button class="flex items-center gap-space-xs px-space-md py-2 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md transition-all shadow-sm" type="button"><span class="material-symbols-outlined text-[18px]">add_circle</span><span>Nouveau signalement</span></button><div class="h-6 w-[1px] bg-outline-variant/40"></div><button class="relative p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-error ring-2 ring-surface"></span></button><button class="relative p-2 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors" type="button"><span class="material-symbols-outlined text-[22px]">help</span></button><div class="flex items-center gap-space-sm pl-2"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></header><main class="relative pt-16 min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="p-gutter-desktop space-y-gutter-desktop">
+<!-- Top Level Header & Quick Action Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md bg-surface-container-lowest p-space-lg rounded-xl shadow-sm">
+<div class="space-y-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-2.5 h-7 bg-primary rounded-full"></div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight">Gestion du parc biomédical</h1>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant pl-space-md flex items-center gap-space-xs">
+<span class="font-label-md text-label-md text-primary font-semibold">142</span> dispositifs médicaux répertoriés • Site Central Hôpital Nord
+        </p>
+</div>
+<div class="flex flex-wrap items-center gap-space-sm">
+<button class="inline-flex items-center gap-space-xs px-space-md py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md text-label-md transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[18px] text-secondary">file_download</span>
+<span>Exporter inventaire CSV/PDF</span>
+</button>
+<button class="inline-flex items-center gap-space-xs px-space-lg py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md transition-all shadow-md" type="button">
+<span class="material-symbols-outlined text-[19px]">add</span>
+<span>Ajouter un équipement</span>
+</button>
+</div>
+</div>
+<!-- Quick Vital Metrics Ribbon -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md">
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Disponibilité Parc</div>
+<div class="font-headline-md text-headline-md text-on-surface font-bold mt-1">94.8%</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-surface-container-low flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[22px]">health_and_safety</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">En Panne / Arrêt</div>
+<div class="font-headline-md text-headline-md text-error font-bold mt-1">4 appareils</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-error-container flex items-center justify-center text-on-error-container">
+<span class="material-symbols-outlined text-[22px]">emergency</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Maint. en cours</div>
+<div class="font-headline-md text-headline-md text-primary font-bold mt-1">7 interventions</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed-variant">
+<span class="material-symbols-outlined text-[22px]">build</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm flex items-center justify-between">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface-variant uppercase">Contrôle Qualité Échu</div>
+<div class="font-headline-md text-headline-md text-secondary font-bold mt-1">0 retard</div>
+</div>
+<div class="w-10 h-10 rounded-lg bg-secondary-fixed flex items-center justify-center text-on-secondary-fixed">
+<span class="material-symbols-outlined text-[22px]">verified</span>
+</div>
+</div>
+</div>
+<!-- Multi-Filter & Search Bar -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl shadow-sm space-y-space-md">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-space-sm items-center">
+<!-- Instant search input -->
+<div class="lg:col-span-5 relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full pl-10 pr-space-md py-2.5 rounded-lg bg-surface-container-low text-on-surface placeholder:text-outline text-body-md font-body-md focus:bg-surface-container-lowest focus:outline-none focus:ring-2 focus:ring-primary shadow-inner" id="searchInput" placeholder="Rechercher par équipement, modèle, n° série, inventaire..." type="text"/>
+</div>
+<!-- Service filter -->
+<div class="lg:col-span-2">
+<select class="w-full px-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer" id="filterService">
+<option value="">Tous les services</option>
+<option value="Réanimation">Réanimation</option>
+<option value="Urgences">Urgences</option>
+<option value="Chirurgie">Chirurgie / Bloc</option>
+<option value="Imagerie">Imagerie</option>
+<option value="Stérilisation">Stérilisation</option>
+</select>
+</div>
+<!-- Operational Status filter -->
+<div class="lg:col-span-2">
+<select class="w-full px-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer" id="filterStatus">
+<option value="">Tous les statuts</option>
+<option value="Fonctionnel">Fonctionnel</option>
+<option value="Sous surveillance">Sous surveillance</option>
+<option value="En panne">En panne</option>
+<option value="En maintenance">En maintenance</option>
+<option value="Réforme">Réforme</option>
+</select>
+</div>
+<!-- Criticality Level filter -->
+<div class="lg:col-span-2">
+<select class="w-full px-3 py-2.5 rounded-lg bg-surface-container-low text-on-surface font-label-md text-label-md focus:outline-none focus:ring-2 focus:ring-primary cursor-pointer" id="filterCriticality">
+<option value="">Niveau de criticité</option>
+<option value="Critique">Critique</option>
+<option value="Élevé">Élevé</option>
+<option value="Moyen">Moyen</option>
+<option value="Faible">Faible</option>
+</select>
+</div>
+<!-- Clear Filters Button -->
+<div class="lg:col-span-1 flex justify-end">
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors flex items-center justify-center w-full lg:w-auto" id="resetBtn" title="Réinitialiser les filtres" type="button">
+<span class="material-symbols-outlined text-[20px]">filter_alt_off</span>
+</button>
+</div>
+</div>
+<!-- Result counter and active tags display -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-space-sm">
+<span class="flex h-2 w-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface" id="resultsCounter">Affichage de 10 sur 142 équipements</span>
+</div>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm text-outline">
+<span class="material-symbols-outlined text-[15px]">info</span>
+          Synchronisation GMAO automatique active (10:42)
+        </div>
+</div>
+</div>
+<!-- Biomedical Asset High-Density Table View -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden flex flex-col">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-3 px-space-md w-12 text-center" scope="col">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</th>
+<th class="py-3 px-space-md" scope="col">Équipement &amp; Identifiants</th>
+<th class="py-3 px-space-md" scope="col">Catégorie</th>
+<th class="py-3 px-space-md" scope="col">Service &amp; Emplacement</th>
+<th class="py-3 px-space-md" scope="col">Statut</th>
+<th class="py-3 px-space-md" scope="col">Criticité</th>
+<th class="py-3 px-space-md" scope="col">Dernière Maintenance</th>
+<th class="py-3 px-space-md text-right" scope="col">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container text-body-md font-body-md text-on-surface" id="assetsTableBody">
+<!-- Item 1: Respirateur Dräger -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Critique" data-service="Réanimation" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">air</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors flex items-center gap-space-xs">
+                      Respirateur Evita V500
+                      <span class="material-symbols-outlined text-[14px] text-tertiary" title="Certification ISO en vigueur">verified</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Dräger</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2024-001</span>
+<span class="text-outline text-[11px] font-mono">SN: DRA-98214-X</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Respirateur lourd</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Réanimation</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment A • Étage 2 • Salle R1</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-error-container text-on-error-container">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                  Critique
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">12/05/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Conforme
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 2: Moniteur Philips -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Élevé" data-service="Urgences" data-status="En panne">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">monitor_heart</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      IntelliVue MX800
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Philips</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2024-042</span>
+<span class="text-outline text-[11px] font-mono">SN: PH-MX8-1090</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Moniteur multiparamétrique</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Urgences</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment B • RDC • Box 3</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-error-container text-on-error-container">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+                  En panne
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-variant text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-error">priority_high</span>
+                  Élevé
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">10/06/2026</div>
+<div class="font-body-sm text-body-sm text-error flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">cancel</span> Ticket #4109
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg bg-error text-on-error hover:bg-error-container transition-colors shadow-sm" title="Intervention d'urgence" type="button">
+<span class="material-symbols-outlined text-[17px]">build</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 3: Pousse-seringue BD -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Moyen" data-service="Chirurgie" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">vaccines</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Pousse-seringue Alaris GH Plus
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">BD Becton Dickinson</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2023-112</span>
+<span class="text-outline text-[11px] font-mono">SN: BD-AL-5510</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Pousse-seringue électrique</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Chirurgie / Bloc</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment Central • Étage 1 • Sas 2</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-container text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-secondary">tune</span>
+                  Moyen
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">28/04/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Étalonné
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 4: Autoclave Getinge -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Moyen" data-service="Stérilisation" data-status="En maintenance">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">heat</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Autoclave stérilisation vapeur GSS67H
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Getinge</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2022-094</span>
+<span class="text-outline text-[11px] font-mono">SN: GET-ST-8840</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Stérilisateur vapeur</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Stérilisation</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment Technique • SS-1 • Zone propre</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-primary-fixed text-on-primary-fixed-variant">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+                  En maintenance
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-container text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-secondary">tune</span>
+                  Moyen
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">14/06/2026</div>
+<div class="font-body-sm text-body-sm text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">timelapse</span> Révision annuelle
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 5: Échographe Philips -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Faible" data-service="Imagerie" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">radiology</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Échographe portable CX50
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Philips</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2024-089</span>
+<span class="text-outline text-[11px] font-mono">SN: PH-CX-0341</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Échographe Doppler</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Imagerie</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment D • RDC • Salle Écho 1</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-container-high text-secondary">
+<span class="material-symbols-outlined text-[13px]">remove</span>
+                  Faible
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">02/06/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Validé
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 6: Bistouri électrique Erbe -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Critique" data-service="Chirurgie" data-status="Sous surveillance">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">offline_bolt</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Générateur Électrochirurgical VIO 3
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Erbe Elektromedizin</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2023-018</span>
+<span class="text-outline text-[11px] font-mono">SN: ERB-VIO-4501</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Bistouri électrique</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Chirurgie / Bloc</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment Central • Étage 1 • Salle Op. 4</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container text-on-surface">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                  Sous surveillance
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-error-container text-on-error-container">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                  Critique
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">19/05/2026</div>
+<div class="font-body-sm text-body-sm text-secondary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">schedule</span> Alerte impédance
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 7: Défibrillateur Corpuls -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Critique" data-service="Urgences" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">cardiology</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Défibrillateur / Moniteur Corpuls3
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">GS Stemple</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2024-015</span>
+<span class="text-outline text-[11px] font-mono">SN: CP3-99120</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Défibrillateur biphasique</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Urgences</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment B • RDC • Chariot Urgence 1</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-error-container text-on-error-container">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                  Critique
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">05/06/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Choc test OK
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 8: Table d'opération Maquet -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Élevé" data-service="Chirurgie" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">bed</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Table d'opération mobile Magnus
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Maquet Getinge</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2021-008</span>
+<span class="text-outline text-[11px] font-mono">SN: MAQ-MG-118</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Mobilier médico-technique</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Chirurgie / Bloc</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment Central • Étage 1 • Salle Op. 1</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-variant text-on-surface">
+<span class="material-symbols-outlined text-[13px] text-error">priority_high</span>
+                  Élevé
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">22/02/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Hydraulique OK
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 9: Dialyse Fresenius -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group" data-criticality="Critique" data-service="Réanimation" data-status="Fonctionnel">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-primary">
+<span class="material-symbols-outlined text-[24px]">water_drop</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Générateur Hémodiafiltration 5008S
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Fresenius Medical Care</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2023-044</span>
+<span class="text-outline text-[11px] font-mono">SN: FRES-5008-032</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Épuration extra-rénale</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Réanimation</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment A • Étage 2 • Salle R4</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-secondary-container text-on-secondary-fixed">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+                  Fonctionnel
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-error-container text-on-error-container">
+<span class="material-symbols-outlined text-[13px]">warning</span>
+                  Critique
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">11/04/2026</div>
+<div class="font-body-sm text-body-sm text-tertiary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">check</span> Filtres neufs
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter la fiche" type="button">
+<span class="material-symbols-outlined text-[19px]">visibility</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le dispositif" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+<button class="p-1.5 rounded-lg text-error hover:bg-error-container/50 transition-colors" title="Déclarer une panne" type="button">
+<span class="material-symbols-outlined text-[19px]">report</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Item 10: Réforme Stérilisateur ancien -->
+<tr class="hover:bg-surface-container-low/60 transition-colors group opacity-80" data-criticality="Faible" data-service="Stérilisation" data-status="Réforme">
+<td class="py-3.5 px-space-md text-center">
+<input class="rounded bg-surface-container-lowest text-primary focus:ring-primary h-4 w-4 cursor-pointer" type="checkbox"/>
+</td>
+<td class="py-3.5 px-space-md">
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-lg bg-surface-container flex items-center justify-center flex-shrink-0 text-secondary">
+<span class="material-symbols-outlined text-[24px]">inventory_2</span>
+</div>
+<div class="min-w-0">
+<div class="font-label-md text-label-md text-on-surface group-hover:text-primary transition-colors">
+                      Thermodésinfecteur PG 8528
+                    </div>
+<div class="font-body-sm text-body-sm text-on-surface-variant flex items-center gap-space-xs mt-0.5">
+<span class="font-medium text-on-surface">Miele Professional</span>
+<span>•</span>
+<span class="bg-surface-container-high px-1.5 py-0.5 rounded text-[11px] font-mono text-on-surface">INV-2015-021</span>
+<span class="text-outline text-[11px] font-mono">SN: ML-85-0012</span>
+</div>
+</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="font-label-sm text-label-sm text-on-surface">Laveur-désinfecteur</span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-md text-label-md text-on-surface">Stérilisation</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Bâtiment Technique • Dépôt Réforme</div>
+</div>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-label-sm font-label-sm bg-surface-container-high text-on-surface">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+                  Réforme
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-label-sm font-label-sm bg-surface-container-high text-secondary">
+<span class="material-symbols-outlined text-[13px]">remove</span>
+                  Faible
+                </span>
+</td>
+<td class="py-3.5 px-space-md">
+<div>
+<div class="font-label-sm text-label-sm text-on-surface">15/01/2024</div>
+<div class="font-body-sm text-body-sm text-outline flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[13px]">block</span> Déclassé
+                  </div>
+</div>
+</td>
+<td class="py-3.5 px-space-md text-right">
+<div class="inline-flex items-center gap-1">
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Consulter l'archive" type="button">
+<span class="material-symbols-outlined text-[19px]">archive</span>
+</button>
+<button class="p-1.5 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container transition-colors" title="Modifier le statut" type="button">
+<span class="material-symbols-outlined text-[19px]">edit</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Professional Hospital GMAO Pagination Bar -->
+<div class="p-space-md bg-surface-container-low flex flex-col sm:flex-row items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs font-body-sm text-body-sm text-on-surface-variant">
+<span>Afficher</span>
+<select class="px-2 py-1 bg-surface-container-lowest text-on-surface font-label-sm text-label-sm rounded focus:outline-none focus:ring-1 focus:ring-primary cursor-pointer">
+<option selected="">10</option>
+<option>25</option>
+<option>50</option>
+<option>100</option>
+</select>
+<span>lignes par page</span>
+</div>
+<div class="h-4 w-[1px] bg-outline-variant/60 hidden sm:block"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Page 1 sur 15</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<button class="px-3 py-1.5 rounded bg-surface-container-lowest text-outline font-label-sm text-label-sm hover:bg-surface hover:text-on-surface transition-colors cursor-not-allowed flex items-center gap-1" disabled="" type="button">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+            Précédent
+          </button>
+<div class="flex items-center gap-1">
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-label-sm text-label-sm flex items-center justify-center font-bold" type="button">1</button>
+<button class="w-8 h-8 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">2</button>
+<button class="w-8 h-8 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">3</button>
+<span class="w-6 text-center text-outline font-label-sm text-label-sm">...</span>
+<button class="w-8 h-8 rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-label-sm text-label-sm flex items-center justify-center transition-colors" type="button">15</button>
+</div>
+<button class="px-3 py-1.5 rounded bg-surface-container-lowest text-on-surface font-label-sm text-label-sm hover:bg-surface-container transition-colors flex items-center gap-1 shadow-sm" type="button">
+            Suivant
+            <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Interactive Client-side Script for Instant Filtering -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const searchInput = document.getElementById('searchInput');
+      const filterService = document.getElementById('filterService');
+      const filterStatus = document.getElementById('filterStatus');
+      const filterCriticality = document.getElementById('filterCriticality');
+      const resetBtn = document.getElementById('resetBtn');
+      const tableRows = document.querySelectorAll('#assetsTableBody tr');
+      const resultsCounter = document.getElementById('resultsCounter');
+
+      function filterTable() {
+        const query = (searchInput.value || '').toLowerCase().trim();
+        const selectedService = filterService.value;
+        const selectedStatus = filterStatus.value;
+        const selectedCrit = filterCriticality.value;
+
+        let visibleCount = 0;
+
+        tableRows.forEach(row => {
+          const text = row.textContent.toLowerCase();
+          const rowService = row.getAttribute('data-service') || '';
+          const rowStatus = row.getAttribute('data-status') || '';
+          const rowCrit = row.getAttribute('data-criticality') || '';
+
+          const matchesQuery = !query || text.includes(query);
+          const matchesService = !selectedService || rowService.includes(selectedService);
+          const matchesStatus = !selectedStatus || rowStatus.includes(selectedStatus);
+          const matchesCrit = !selectedCrit || rowCrit.includes(selectedCrit);
+
+          if (matchesQuery && matchesService && matchesStatus && matchesCrit) {
+            row.style.display = '';
+            visibleCount++;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (visibleCount === 0) {
+          resultsCounter.textContent = 'Aucun équipement ne correspond aux filtres appliqués';
+        } else {
+          resultsCounter.textContent = `Affichage de ${visibleCount} sur 142 équipements`;
+        }
+      }
+
+      searchInput.addEventListener('input', filterTable);
+      filterService.addEventListener('change', filterTable);
+      filterStatus.addEventListener('change', filterTable);
+      filterCriticality.addEventListener('change', filterTable);
+
+      resetBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        filterService.value = '';
+        filterStatus.value = '';
+        filterCriticality.value = '';
+        filterTable();
+      });
+    });
+  </script>
+</div></main></div></body></html>
