@@ -1,16 +1,30 @@
 # Python
 __pycache__/
 *.py[cod]
+*.pyo
 *.egg-info/
 dist/
 .eggs/
 *.egg
-.env
+.venv/
 venv/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+*.log
+media/
+staticfiles/
+
+# Environment
+.env
+.env.*
+!.env.example
 
 # Node
 node_modules/
 dist/
+tsconfig.tsbuildinfo
 
 # Docker
 docker-compose.override.yml
@@ -20,3 +34,7 @@ docker-compose.override.yml
 .idea/
 *.swp
 *.swo
+
+# OS
+.DS_Store
+Thumbs.db
