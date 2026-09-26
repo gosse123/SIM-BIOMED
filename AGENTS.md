@@ -28,9 +28,11 @@ Documentation-only repo for SIM-BIOMED (Système Intelligent de Maintenance Biom
 - **Layered:** API → Application → Domain → Infrastructure
 - Domain layer must not depend on React, HTTP, or Django views
 - Server is the authority — no business rules enforced only in frontend
-- All state transitions must be explicit domain-controlled
+- All state transitions must be explicit domain-controlled (`backend/domain/`)
 - Every important action leaves an audit trace
 - No closure without test result (RB-TEST-001, RB-CL-001)
+- **Cloisonnement multi-établissements** : tout queryset est filtré par `etablissement` de l'utilisateur via `apps/accounts/scoping.py::scope_to_etablissement`. Un utilisateur sans établissement (super-admin d'onboarding) voit tout. L'établissement d'un utilisateur est attribué par l'admin à l'approbation — jamais choisi librement au profil
+- Le mot de passe temporaire n'est jamais persisté (pas dans Notification) — retourné uniquement dans la réponse API d'approbation
 
 ## MVP scope constraints
 
