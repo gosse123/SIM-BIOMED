@@ -2,7 +2,12 @@
 
 ## What this repo is
 
-Documentation-only repo for SIM-BIOMED (Système Intelligent de Maintenance Biomédicale). No application code exists yet — the repo contains architecture specs, business rules, UML diagrams, and UI mockups.
+Documentation repo for SIM-BIOMED (Système Intelligent de Maintenance Biomédicale) : architecture specs, business rules, UML diagrams, UI mockups.
+
+The application code lives in two separate repositories (split for independent hosting) :
+
+- **Backend (Django/DRF)** : `../SIM-BIOMED-backend` — contains `docker-compose.yml` (db + redis + backend), `config/settings/{development,test,production}.py`, tests via `DJANGO_SETTINGS_MODULE=config.settings.test venv/bin/python -m pytest`
+- **Frontend (React/Vite)** : `../SIM-BIOMED-frontend` — dev server proxies `/api` to `localhost:8000`
 
 ## Key files
 
