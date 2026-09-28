@@ -1,0 +1,50 @@
+name: Docs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  docs-integrity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fichiers documentaires cles presents
+        run: |
+          set -eu
+          required=(
+            "AGENTS.md"
+            "doc/SIM-BIOMED-Architecture-Technique-MVP.md"
+            "doc/SIM-BIOMED-Regles-Metier-Strictes.md"
+            "doc/SIM-BIOMED — Architecture logicielle(1).md"
+            "doc/SIM-BIOMED — Logique métier(1).md"
+            "doc/00-classes.puml"
+            "doc/01-cas-utilisation.puml"
+            "doc/02-sequence-panne.puml"
+            "doc/03-etats-panne.puml"
+            "doc/disigne-market"
+          )
+          missing=0
+          for f in "${required[@]}"; do
+            if [ ! -e "$f" ]; then
+              echo "::error::Fichier manquant: $f"
+              missing=1
+            fi
+          done
+          exit "$missing"
+
+      - name: Diagrammes PlantUML non vides
+        run: |
+          set -eu
+          count=0
+          for f in doc/*.puml; do
+            if [ ! -s "$f" ]; then
+              echo "::error::Diagramme vide: $f"
+              exit 1
+            fi
+            count=$((count + 1))
+          done
+          echo "$count diagramme(s) PlantUML verifie(s)"
