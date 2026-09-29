@@ -35,6 +35,7 @@ Navigateur ──HTTPS──▶ Frontend (nginx, Dockerfile.prod)
 | `Dockerfile.prod` | backend | Image multi-étapes, utilisateur non-root, `ENTRYPOINT` migrations + `collectstatic`, `CMD` Gunicorn sur `$PORT` |
 | `docker-entrypoint.sh` | backend | Migrations avec 5 tentatives (attente base), `collectstatic`, puis `CMD` ; désactivables par `RUN_MIGRATIONS=false` / `RUN_COLLECTSTATIC=false` |
 | `render.yaml` | backend | Blueprint : services `api`, `worker`, `beat` + variables |
+| `render.free.yaml` | backend | Variante **test gratuit** : `api` seul, sans worker/beat |
 | `.env.example` | backend | Catalogue des variables (local et production), valeurs factices |
 | `GET /api/healthz/` et `/healthz/` | backend | Sonde : `200` base OK, `503` base inaccessible, accessible sans authentification |
 | `Dockerfile.prod` | frontend | Build Vite puis `nginx:alpine` |
@@ -102,7 +103,53 @@ curl -fsSI https://FRONTEND_HOST/            # 200, index.html
 # Connexion réelle : POST /api/auth/login/ depuis l'interface
 ```
 
-## 5. Commandes utiles
+## 5. Test gratuit (Render free + Supabase)
+
+Pour un essai sans budget : deux services web gratuits + base Supabase.
+
+| Élément | Plateforme | Tarif |
+| --- | --- | --- |
+| `api` + `frontend` | Render, tier gratuit (750 h/mois cumulées) | 0 |
+| PostgreSQL | Supabase free (500 Mo) | 0 |
+| `worker` / `beat` | omit (background workers payants) | — |
+| Redis | inutile : rien ne parle à Celery sans worker | — |
+
+### Procédure
+
+1. **Supabase** → *New project* → *Settings → Database → Connection string (URI)* :
+   copier l'URL, mode **Pooler**, et ajouter `?sslmode=require` si absent.
+2. **Backend** → *New Blueprint* sur `SIM-BIOMED-backend` → sélectionner le
+   fichier blueprint **`render.free.yaml`**
+   (si le tableau de bord ne propose pas de choix de fichier, il lit
+   `render.yaml` : basculer temporairement avec
+   `git mv render.yaml render.full.yaml && git mv render.free.yaml render.yaml`,
+   puis inverser au moment de passer au complet).
+3. Renseigner `DATABASE_URL` (marqué `sync: false`) — à saisir dans le
+   dashboard Render, **jamais** dans le dépôt.
+4. **Frontend** → *New Blueprint* sur `SIM-BIOMED-frontend`, garder
+   `render.yaml`, vérifier `API_UPSTREAM = https://SIMBIOMED-API.onrender.com`.
+5. Après le premier déploiement : console du service `api` →
+   `python manage.py createsuperuser`.
+6. Vérifications : `curl -fsS https://API/api/healthz/` puis connexion réelle
+   depuis l'interface.
+
+### Tâches Celery à la main (pas de beat en gratuit)
+
+```bash
+python manage.py shell -c "from apps.preventive.tasks import check_overdue_maintenance as f; print(f())"
+python manage.py shell -c "from apps.preventive.tasks import generate_preventive_schedule as f; print(f())"
+```
+
+### Limites du tier gratuit
+
+- Veille après ~15 min sans activité → premier appel à 30-60 s (attendre le
+  premier appel avant de conclure à une panne).
+- 750 h/mois cumulées sur les services gratuits : suffisant pour un test en
+  continu d'un ou deux services.
+- Domaine `*.onrender.com` avec HTTPS ; domaine personnalisé = payant.
+- `WEB_CONCURRENCY=1` (512 Mo de RAM) — déjà posé dans `render.free.yaml`.
+
+## 6. Commandes utiles
 
 ```bash
 # Images de production en local
@@ -120,7 +167,7 @@ ruff check . && pytest tests/ -v          # backend
 npm run lint && npm run test && npm run build   # frontend
 ```
 
-## 6. Variantes Railway / Fly
+## 7. Variantes Railway / Fly
 
 - **Railway** : créer deux services à partir des dépôts, builder avec
   `Dockerfile.prod`, commande web `sh -c "gunicorn …"` (déjà le `CMD` de
@@ -132,7 +179,7 @@ npm run lint && npm run test && npm run build   # frontend
 - Dans les deux cas : PostgreSQL externe obligatoire (les services n'exposent
   aucun port de base).
 
-## 7. Chaîne de proxy et HTTPS
+## 8. Chaîne de proxy et HTTPS
 
 ```text
 Navigateur ──https──▶ Proxy plateforme ──http + X-Forwarded-Proto: https──▶ nginx ──▶ Gunicorn
@@ -146,7 +193,7 @@ Navigateur ──https──▶ Proxy plateforme ──http + X-Forwarded-Proto:
 - Le `HEALTHCHECK` du conteneur envoie explicitement `X-Forwarded-Proto:
   https` pour ne pas être victime de la redirection.
 
-## 8. Secrets et configuration
+## 9. Secrets et configuration
 
 - Les secrets vivent uniquement dans le gestionnaire de secrets de la
   plateforme ; `.env.example` ne contient que des valeurs factices.
@@ -156,7 +203,7 @@ Navigateur ──https──▶ Proxy plateforme ──http + X-Forwarded-Proto:
 - Rotation : régénérer `DJANGO_SECRET_KEY` invalide les JWT en cours — à
   prévoir en heure creuse.
 
-## 9. Sauvegardes et restauration
+## 10. Sauvegardes et restauration
 
 - **Supabase** : sauvegardes automatiques (PITR) à activer ; test de
   restauration sur un instantané au moins une fois avant la mise en service.
@@ -168,7 +215,7 @@ pg_dump "$DATABASE_URL" | gzip > simbiomed-$(date +%F).sql.gz
 gunzip -c simbiomed-YYYY-MM-DD.sql.gz | psql "$DATABASE_URL"
 ```
 
-## 10. Déploiement continu, supervision, rollback
+## 11. Déploiement continu, supervision, rollback
 
 - La CI (GitHub Actions) valide chaque push/PR : `ruff`, `pytest` +
   contrôle des migrations (backend), `lint` + `tests` + `build` (frontend).
@@ -182,7 +229,7 @@ gunzip -c simbiomed-YYYY-MM-DD.sql.gz | psql "$DATABASE_URL"
   de déploiements de la plateforme, puis `python manage.py migrate` si un
   retour en arrière de schéma est nécessaire (éviter les migrations destructives).
 
-## 11. Checklist « prêt pour production »
+## 12. Checklist « prêt pour production »
 
 Liée à `ANALYSE-STRUCTURE-VERSION-PRODUCTION.md` :
 
@@ -192,7 +239,7 @@ Liée à `ANALYSE-STRUCTURE-VERSION-PRODUCTION.md` :
 - [x] Services `worker` et `beat` déclarés, health checks applicatifs
 - [x] Fichiers statiques servis (`collectstatic` + WhiteNoise)
 - [x] CI : tests, build frontend, contrôle des migrations
-- [ ] Sauvegardes **restaurées** au moins une fois (§9)
+- [ ] Sauvegardes **restaurées** au moins une fois (§10)
 - [ ] `db.sqlite3` retiré du suivi Git
 - [ ] Correctifs `REVUE-CORRECTIONS-HORS-LIGNE.md` validés avant ouverture
       aux utilisateurs
