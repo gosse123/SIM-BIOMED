@@ -1,0 +1,198 @@
+# Déploiement SIM-BIOMED (MVP)
+
+Cible retenue : **PaaS managé (Render / Railway / Fly)**, **PostgreSQL externe
+(Supabase ou équivalent)**, publication d'images par la plateforme (pas de
+registre d'images géré en CI pour le MVP).
+
+## 1. Vue d'ensemble
+
+```text
+Navigateur ──HTTPS──▶ Frontend (nginx, Dockerfile.prod)
+                          │  /api, /admin, /static
+                          ▼
+                     API (Django + Gunicorn, Dockerfile.prod) ──▶ PostgreSQL externe
+                          │                                        (Supabase)
+                          ├──▶ Worker Celery (mêmes sources)
+                          └──▶ Beat Celery (planification préventive)
+                                        ▲
+                                        └── Redis externe (broker)
+```
+
+- **TLS** : terminé par la plateforme. Django reçoit `X-Forwarded-Proto` et ne
+  doit jamais être exposé directement.
+- **Frontend** : conteneur nginx qui sert le build Vite et proxyse `/api`,
+  `/admin`, `/static` vers l'API via `API_UPSTREAM`. Le code applicatif utilise
+  une `baseURL` relative `/api`, donc aucun rebuild n'est nécessaire pour
+  changer d'environnement.
+- **Trois services backend** partagent la même image : `api` (web), `worker`
+  (Celery), `beat` (planning). Seul l'`api` exécute migrations et
+  collectstatic au démarrage.
+
+## 2. Artefacts de déploiement
+
+| Fichier | Dépôt | Rôle |
+| --- | --- | --- |
+| `Dockerfile.prod` | backend | Image multi-étapes, utilisateur non-root, `ENTRYPOINT` migrations + `collectstatic`, `CMD` Gunicorn sur `$PORT` |
+| `docker-entrypoint.sh` | backend | Migrations avec 5 tentatives (attente base), `collectstatic`, puis `CMD` ; désactivables par `RUN_MIGRATIONS=false` / `RUN_COLLECTSTATIC=false` |
+| `render.yaml` | backend | Blueprint : services `api`, `worker`, `beat` + variables |
+| `.env.example` | backend | Catalogue des variables (local et production), valeurs factices |
+| `GET /api/healthz/` et `/healthz/` | backend | Sonde : `200` base OK, `503` base inaccessible, accessible sans authentification |
+| `Dockerfile.prod` | frontend | Build Vite puis `nginx:alpine` |
+| `nginx/default.conf.template` | frontend | SPA + proxy `/api` (`API_UPSTREAM`), cache assets, `/healthz` |
+| `render.yaml` | frontend | Blueprint du service web |
+
+Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
+**développement local** (`runserver`, ports exposés, volumes de code).
+
+## 3. Variables d'environnement
+
+### Backend (`config.settings.production`)
+
+| Variable | Obligatoire | Description |
+| --- | --- | --- |
+| `DJANGO_SECRET_KEY` | oui | Jamais par défaut en production (levée si absente) |
+| `ALLOWED_HOSTS` | oui | Hôtes de l'API, séparés par des virgules |
+| `CORS_ALLOWED_ORIGINS` | oui | Origine(s) frontend en HTTPS |
+| `CSRF_TRUSTED_ORIGINS` | oui | Origine(s) de l'API en HTTPS (admin) |
+| `DATABASE_URL` | oui* | `postgresql://USER:PASSWORD@HOST:5432/simbiomed?sslmode=require` |
+| `REDIS_URL` | oui | Broker Celery (worker + beat) |
+| `DJANGO_SETTINGS_MODULE` | oui | `config.settings.production` |
+| `SECURE_SSL_REDIRECT` | non (défaut `true`) | `false` uniquement si le proxy ne transmet pas `X-Forwarded-Proto` |
+| `LOG_LEVEL` | non (défaut `WARNING`) | `INFO` recommandé en production |
+| `PORT` | non (défaut `8000`) | Fourni par la plateforme |
+| `WEB_CONCURRENCY` | non (défaut `2`) | Workers Gunicorn |
+| `RUN_MIGRATIONS` / `RUN_COLLECTSTATIC` | non (défaut `true`) | `false` sur worker/beat |
+
+\* Alternative à `DATABASE_URL` : `DB_HOST`, `DB_PORT`, `POSTGRES_DB`,
+`POSTGRES_USER`, `POSTGRES_PASSWORD` (mutuellement exclusifs).
+
+### Frontend
+
+| Variable | Obligatoire | Description |
+| --- | --- | --- |
+| `API_UPSTREAM` | oui | URL de l'API, par ex. `https://simbiomed-api.onrender.com` ou `http://simbiomed-api:10000` en réseau privé |
+
+## 4. Mise en route (Render)
+
+1. **Base de données (Supabase)**
+   - Créer le projet, copier l'URL de connexion *Transaction/Session pooler*,
+     ajouter `?sslmode=require` → future `DATABASE_URL`.
+   - Activer les sauvegardes automatiques et noter où se fait la restauration.
+2. **Redis** : Upstash, ou Redis managé de la plateforme → future `REDIS_URL`.
+3. **API** : *New Blueprint* sur le dépôt backend, garder `render.yaml`.
+   - Renseigner `DATABASE_URL` et `REDIS_URL` (marquées `sync: false`).
+   - Après création du service, reporter les URL réelles dans
+     `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS` et
+     relancer la synchronisation.
+   - Le premier démarrage exécute `migrate` puis `collectstatic`.
+4. **Worker et Beat** : déclarés par le même blueprint ; ils récupèrent
+   `DJANGO_SECRET_KEY`, `DATABASE_URL` et `REDIS_URL` via `fromService`.
+5. **Frontend** : *New Blueprint* sur le dépôt frontend, garder `render.yaml`,
+   renseigner `API_UPSTREAM` avec l'URL de l'API.
+6. **Compte initial** : console du service API →
+   `python manage.py createsuperuser`, puis approuver les demandes d'accès
+   depuis l'interface (cloisonnement par établissement, RB-*).
+
+### Vérification post-déploiement
+
+```bash
+curl -fsS https://API_HOST/api/healthz/      # {"status": "ok", "database": "up"}
+curl -fsS https://FRONTEND_HOST/healthz      # ok
+curl -fsSI https://FRONTEND_HOST/            # 200, index.html
+# Connexion réelle : POST /api/auth/login/ depuis l'interface
+```
+
+## 5. Commandes utiles
+
+```bash
+# Images de production en local
+docker build -f Dockerfile.prod -t simbiomed-api .          # backend
+docker build -f Dockerfile.prod -t simbiomed-frontend .     # frontend
+
+# Console / maintenance (Web Shell de la plateforme)
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py collectstatic --noinput
+python manage.py shell
+
+# Vérifications avant livraison (équivalent CI)
+ruff check . && pytest tests/ -v          # backend
+npm run lint && npm run test && npm run build   # frontend
+```
+
+## 6. Variantes Railway / Fly
+
+- **Railway** : créer deux services à partir des dépôts, builder avec
+  `Dockerfile.prod`, commande web `sh -c "gunicorn …"` (déjà le `CMD` de
+  l'image), worker `celery -A config worker -l info`, beat
+  `celery -A config beat -l info`. La plateforme fournit `PORT` et
+  `DATABASE_URL`.
+- **Fly.io** : un `fly init` par service, `internal_port` aligné sur `$PORT`,
+  health check sur `/api/healthz/` (api) et `/healthz` (frontend).
+- Dans les deux cas : PostgreSQL externe obligatoire (les services n'exposent
+  aucun port de base).
+
+## 7. Chaîne de proxy et HTTPS
+
+```text
+Navigateur ──https──▶ Proxy plateforme ──http + X-Forwarded-Proto: https──▶ nginx ──▶ Gunicorn
+```
+
+- Django lit `X-Forwarded-Proto` (`SECURE_PROXY_SSL_HEADER`) : sans cet
+  en-tête, `SECURE_SSL_REDIRECT` renvoie une redirection HTTPS qui, remontée à
+  travers nginx, provoquerait une **boucle**. Le template nginx propage
+  l'en-tête reçu (`map $http_x_forwarded_proto`) — ne pas le supprimer.
+- Si le proxy ne fournit jamais cet en-tête : `SECURE_SSL_REDIRECT=false`.
+- Le `HEALTHCHECK` du conteneur envoie explicitement `X-Forwarded-Proto:
+  https` pour ne pas être victime de la redirection.
+
+## 8. Secrets et configuration
+
+- Les secrets vivent uniquement dans le gestionnaire de secrets de la
+  plateforme ; `.env.example` ne contient que des valeurs factices.
+- Ne jamais commiter `.env`, ni de dump de base (`db.sqlite3` est encore suivi
+  dans le dépôt backend : à retirer du suivi, voir
+  `ANALYSE-STRUCTURE-VERSION-PRODUCTION.md` §Structure).
+- Rotation : régénérer `DJANGO_SECRET_KEY` invalide les JWT en cours — à
+  prévoir en heure creuse.
+
+## 9. Sauvegardes et restauration
+
+- **Supabase** : sauvegardes automatiques (PITR) à activer ; test de
+  restauration sur un instantané au moins une fois avant la mise en service.
+- Export manuel :
+
+```bash
+pg_dump "$DATABASE_URL" | gzip > simbiomed-$(date +%F).sql.gz
+# Restauration de contrôle sur une base vierge
+gunzip -c simbiomed-YYYY-MM-DD.sql.gz | psql "$DATABASE_URL"
+```
+
+## 10. Déploiement continu, supervision, rollback
+
+- La CI (GitHub Actions) valide chaque push/PR : `ruff`, `pytest` +
+  contrôle des migrations (backend), `lint` + `tests` + `build` (frontend).
+- `autoDeploy: true` déploie la branche `main` : ne merger que CI verte et
+  migration sûre (migrations rétro-compatibles : colonnes ajoutées puis
+  suppressées au déploiement suivant).
+- **Supervision** : logs JSON côté Django (`LOG_LEVEL`), health checks de la
+  plateforme sur `/api/healthz/` et `/healthz`, à surveiller : taux 5xx,
+  erreurs Celery, latence.
+- **Rollback** : redeployer le commit/segment précédent depuis l'historique
+  de déploiements de la plateforme, puis `python manage.py migrate` si un
+  retour en arrière de schéma est nécessaire (éviter les migrations destructives).
+
+## 11. Checklist « prêt pour production »
+
+Liée à `ANALYSE-STRUCTURE-VERSION-PRODUCTION.md` :
+
+- [x] Réglages `development` / `production` / `test` distincts, secrets requis
+- [x] Images immuables multi-étapes, Gunicorn, pas de `runserver` ni de port
+      PostgreSQL/Redis exposé
+- [x] Services `worker` et `beat` déclarés, health checks applicatifs
+- [x] Fichiers statiques servis (`collectstatic` + WhiteNoise)
+- [x] CI : tests, build frontend, contrôle des migrations
+- [ ] Sauvegardes **restaurées** au moins une fois (§9)
+- [ ] `db.sqlite3` retiré du suivi Git
+- [ ] Correctifs `REVUE-CORRECTIONS-HORS-LIGNE.md` validés avant ouverture
+      aux utilisateurs

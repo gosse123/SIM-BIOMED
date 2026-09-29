@@ -6,8 +6,8 @@ Documentation repo for SIM-BIOMED (Système Intelligent de Maintenance Biomédic
 
 The application code lives in two separate repositories (split for independent hosting) :
 
-- **Backend (Django/DRF)** : `../SIM-BIOMED-backend` — contains `docker-compose.yml` (db + redis + backend), `config/settings/{development,test,production}.py`, tests via `DJANGO_SETTINGS_MODULE=config.settings.test venv/bin/python -m pytest`
-- **Frontend (React/Vite)** : `../SIM-BIOMED-frontend` — dev server proxies `/api` to `localhost:8000`
+- **Backend (Django/DRF)** : `../SIM-BIOMED-backend` — contains `docker-compose.yml` (db + redis + backend), `config/settings/{development,test,production}.py`, production image `Dockerfile.prod` + `render.yaml` (api/worker/beat), tests via `DJANGO_SETTINGS_MODULE=config.settings.test venv/bin/python -m pytest`
+- **Frontend (React/Vite)** : `../SIM-BIOMED-frontend` — dev server proxies `/api` to `localhost:8000`; production image `Dockerfile.prod` (build Vite + nginx proxy via `API_UPSTREAM`)
 
 ## Key files
 
@@ -16,6 +16,8 @@ The application code lives in two separate repositories (split for independent h
 - `doc/SIM-BIOMED — Architecture logicielle(1).md` — Layered architecture design
 - `doc/SIM-BIOMED — Logique métier(1).md` — Business logic and domain model
 - `doc/00-classes.puml` — UML class diagram (PlantUML)
+- `doc/DEPLOIEMENT.md` — Deployment guide (PaaS, env vars, health checks, backups, rollback)
+- `doc/ANALYSE-STRUCTURE-VERSION-PRODUCTION.md` — Production-readiness gaps (P0/P1/P2)
 - `doc/disigne-market/` — UI mockups (HTML screenshots)
 
 ## Target stack (from architecture doc)
