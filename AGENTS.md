@@ -6,8 +6,10 @@ Documentation repo for SIM-BIOMED (Système Intelligent de Maintenance Biomédic
 
 The application code lives in two separate repositories (split for independent hosting) :
 
-- **Backend (Django/DRF)** : `../SIM-BIOMED-backend` — contains `docker-compose.yml` (db + redis + backend), `config/settings/{development,test,production}.py`, production image `Dockerfile.prod` + `render.yaml` (api/worker/beat), tests via `DJANGO_SETTINGS_MODULE=config.settings.test venv/bin/python -m pytest`
-- **Frontend (React/Vite)** : `../SIM-BIOMED-frontend` — dev server proxies `/api` to `localhost:8000`; production image `Dockerfile.prod` (build Vite + nginx proxy via `API_UPSTREAM`)
+- **Backend (Django/DRF)** : `../SIM-BIOMED-backend` — https://github.com/gosse123/SIM-BIOMED-backend — contains `docker-compose.yml` (db + redis + backend), `config/settings/{development,test,production}.py`, production image `Dockerfile.prod` + `render.yaml` (api/worker/beat), tests via `DJANGO_SETTINGS_MODULE=config.settings.test venv/bin/python -m pytest`
+- **Frontend (React/Vite)** : `../SIM-BIOMED-frontend` — https://github.com/gosse123/SIM-BIOMED-frontend — dev server proxies `/api` to `localhost:8000`; production image `Dockerfile.prod` (build Vite + nginx proxy via `API_UPSTREAM`)
+
+Docs repo remote : https://github.com/gosse123/SIM-BIOMED
 
 ## Key files
 
