@@ -15,7 +15,7 @@ Navigateur ──HTTPS──▶ Frontend (nginx, Dockerfile.prod)
                           ├──▶ Worker Celery (mêmes sources)
                           └──▶ Beat Celery (planification préventive)
                                         ▲
-                                        └── Redis externe (broker)
+                                        └── Render Key Value (broker, fourni par le blueprint)
 ```
 
 - **TLS** : terminé par la plateforme. Django reçoit `X-Forwarded-Proto` et ne
@@ -34,8 +34,8 @@ Navigateur ──HTTPS──▶ Frontend (nginx, Dockerfile.prod)
 | --- | --- | --- |
 | `Dockerfile.prod` | backend | Image multi-étapes, utilisateur non-root, `ENTRYPOINT` migrations + `collectstatic`, `CMD` Gunicorn sur `$PORT` |
 | `docker-entrypoint.sh` | backend | Migrations avec 5 tentatives (attente base), `collectstatic`, puis `CMD` ; désactivables par `RUN_MIGRATIONS=false` / `RUN_COLLECTSTATIC=false` |
-| `render.yaml` | backend | Blueprint : services `api`, `worker`, `beat` + variables |
-| `render.free.yaml` | backend | Variante **test gratuit** : `api` seul, sans worker/beat |
+| `render.yaml` | backend | Blueprint : `api`, `worker`, `beat` **+ Key Value (broker)**, tous en `region: frankfurt` |
+| `render.free.yaml` | backend | Variante **test gratuit** : `api` seul, sans worker/beat ni Key Value |
 | `.env.example` | backend | Catalogue des variables (local et production), valeurs factices |
 | `GET /api/healthz/` et `/healthz/` | backend | Sonde : `200` base OK, `503` base inaccessible, accessible sans authentification |
 | `Dockerfile.prod` | frontend | Build Vite puis `nginx:alpine` |
@@ -52,11 +52,12 @@ Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
 | Variable | Obligatoire | Description |
 | --- | --- | --- |
 | `DJANGO_SECRET_KEY` | oui | Jamais par défaut en production (levée si absente) |
-| `ALLOWED_HOSTS` | oui | Hôtes de l'API, séparés par des virgules |
-| `CORS_ALLOWED_ORIGINS` | oui | Origine(s) frontend en HTTPS |
-| `CSRF_TRUSTED_ORIGINS` | oui | Origine(s) de l'API en HTTPS (admin) |
-| `DATABASE_URL` | oui* | `postgresql://USER:PASSWORD@HOST:5432/simbiomed?sslmode=require` |
-| `REDIS_URL` | oui | Broker Celery (worker + beat) |
+| `ALLOWED_HOSTS` | oui | Hôtes de l'API, séparés par des virgules. `RENDER_EXTERNAL_HOSTNAME` (injecté par Render) est **ajouté automatiquement**, donc un suffixe de sous-domaine ne casse pas le health check |
+| `FRONTEND_ORIGIN` | oui | Origine de l'interface, ex. `https://simbiomed-frontend.onrender.com` — alimente à la fois `CORS_ALLOWED_ORIGINS` et `CSRF_TRUSTED_ORIGINS` (`config/settings/origins.py`). Sans elle : **403 CSRF** sur toute requête POST du navigateur, car le proxy nginx envoie `Host: api` |
+| `CSRF_TRUSTED_ORIGINS` | oui | Origine **propre** de l'API (repli hors Render) ; l'originale du front vient de `FRONTEND_ORIGIN` |
+| `DATABASE_URL` | oui* | `postgresql://USER:PASSWORD@HOST:5432/postgres?sslmode=require` — **pooler Supabase en mode SESSION, jamais Transaction** (le mode Transaction casse les prepared statements de Django) |
+| `REDIS_URL` | oui | Broker Celery ; renseigné **automatiquement** par le blueprint via `fromService` (Key Value) |
+| `CORS_ALLOWED_ORIGINS` | non | Origines CORS supplémentaires, en plus de `FRONTEND_ORIGIN` |
 | `DJANGO_SETTINGS_MODULE` | oui | `config.settings.production` |
 | `SECURE_SSL_REDIRECT` | non (défaut `true`) | `false` uniquement si le proxy ne transmet pas `X-Forwarded-Proto` |
 | `LOG_LEVEL` | non (défaut `WARNING`) | `INFO` recommandé en production |
@@ -76,20 +77,30 @@ Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
 ## 4. Mise en route (Render)
 
 1. **Base de données (Supabase)**
-   - Créer le projet, copier l'URL de connexion *Transaction/Session pooler*,
-     ajouter `?sslmode=require` → future `DATABASE_URL`.
+   - Créer le projet, copier l'URL de connexion en mode **Pooler SESSION**
+     (jamais *Transaction* : Django utilise des prepared statements), ajouter
+     `?sslmode=require` → future `DATABASE_URL`.
    - Activer les sauvegardes automatiques et noter où se fait la restauration.
-2. **Redis** : Upstash, ou Redis managé de la plateforme → future `REDIS_URL`.
+2. **Région** : les trois services et le Key Value sont déclarés en
+   `region: frankfurt`, la zone la plus proche de Supabase (`eu-west-2`,
+   Londres). **La région est figée après la première création** — ne pas la
+   modifier au prix d'une latence de ~150 ms par aller-retour.
 3. **API** : *New Blueprint* sur le dépôt backend, garder `render.yaml`.
-   - Renseigner `DATABASE_URL` et `REDIS_URL` (marquées `sync: false`).
-   - Après création du service, reporter les URL réelles dans
-     `ALLOWED_HOSTS`, `CORS_ALLOWED_ORIGINS`, `CSRF_TRUSTED_ORIGINS` et
-     relancer la synchronisation.
-   - Le premier démarrage exécute `migrate` puis `collectstatic`.
+   - Renseigner **`DATABASE_URL` seule** (marquée `sync: false`) — jamais dans
+     le dépôt. `REDIS_URL`, `DJANGO_SECRET_KEY` sont produits par le blueprint.
+   - `ALLOWED_HOSTS` et l'origine propre de l'API sont complétés
+     automatiquement via `RENDER_EXTERNAL_HOSTNAME`. Seule variable à ajuster
+     manuellement si Render suffixe le sous-domaine du front :
+     `FRONTEND_ORIGIN`.
+   - Le premier démarrage exécute `migrate` puis `collectstatic`. Les
+     tout premiers health checks peuvent renvoyer `503` pendant le
+     réchauffement du pool de connexions : c'est transitoire (≈ 1 min).
 4. **Worker et Beat** : déclarés par le même blueprint ; ils récupèrent
-   `DJANGO_SECRET_KEY`, `DATABASE_URL` et `REDIS_URL` via `fromService`.
+   `DJANGO_SECRET_KEY` et `DATABASE_URL` via `fromService` sur l'API, et
+   `REDIS_URL` sur l'instance **Key Value** `simbiomed-redis`
+   (`ipAllowList: []` = réseau privé, `maxmemoryPolicy: noeviction`).
 5. **Frontend** : *New Blueprint* sur le dépôt frontend, garder `render.yaml`,
-   renseigner `API_UPSTREAM` avec l'URL de l'API.
+   renseigner `API_UPSTREAM` avec l'URL de l'API (même région → 2 ms).
 6. **Compte initial** : console du service API →
    `python manage.py createsuperuser`, puis approuver les demandes d'accès
    depuis l'interface (cloisonnement par établissement, RB-*).
@@ -117,7 +128,8 @@ Pour un essai sans budget : deux services web gratuits + base Supabase.
 ### Procédure
 
 1. **Supabase** → *New project* → *Settings → Database → Connection string (URI)* :
-   copier l'URL, mode **Pooler**, et ajouter `?sslmode=require` si absent.
+   copier l'URL, mode **Pooler SESSION** (pas Transaction), et ajouter
+   `?sslmode=require` si absent.
 2. **Backend** → *New Blueprint* sur `SIM-BIOMED-backend` → sélectionner le
    fichier blueprint **`render.free.yaml`**
    (si le tableau de bord ne propose pas de choix de fichier, il lit
@@ -130,8 +142,9 @@ Pour un essai sans budget : deux services web gratuits + base Supabase.
    `render.yaml`, vérifier `API_UPSTREAM = https://SIMBIOMED-API.onrender.com`.
 5. Après le premier déploiement : console du service `api` →
    `python manage.py createsuperuser`.
-6. Vérifications : `curl -fsS https://API/api/healthz/` puis connexion réelle
-   depuis l'interface.
+6. Vérifications : `curl -fsS https://API/api/healthz/`, puis la connexion réelle
+   depuis l'interface (un **403 « Vérification CSRF a échoué »** au login signale
+   que `FRONTEND_ORIGIN` pointe vers le mauvais domaine).
 
 ### Tâches Celery à la main (pas de beat en gratuit)
 
@@ -219,7 +232,8 @@ gunzip -c simbiomed-YYYY-MM-DD.sql.gz | psql "$DATABASE_URL"
 
 - La CI (GitHub Actions) valide chaque push/PR : `ruff`, `pytest` +
   contrôle des migrations (backend), `lint` + `tests` + `build` (frontend).
-- `autoDeploy: true` déploie la branche `main` : ne merger que CI verte et
+- `autoDeployTrigger: 'commit'` déploie la branche `main` : ne merger que CI
+  verte et
   migration sûre (migrations rétro-compatibles : colonnes ajoutées puis
   suppressées au déploiement suivant).
 - **Supervision** : logs JSON côté Django (`LOG_LEVEL`), health checks de la
