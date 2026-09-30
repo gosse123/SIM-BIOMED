@@ -52,9 +52,9 @@ Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
 | Variable | Obligatoire | Description |
 | --- | --- | --- |
 | `DJANGO_SECRET_KEY` | oui | Jamais par défaut en production (levée si absente) |
-| `ALLOWED_HOSTS` | oui | Hôtes de l'API, séparés par des virgules. `RENDER_EXTERNAL_HOSTNAME` (injecté par Render) est **ajouté automatiquement**, donc un suffixe de sous-domaine ne casse pas le health check |
-| `FRONTEND_ORIGIN` | oui | Origine de l'interface, ex. `https://simbiomed-frontend.onrender.com` — alimente à la fois `CORS_ALLOWED_ORIGINS` et `CSRF_TRUSTED_ORIGINS` (`config/settings/origins.py`). Sans elle : **403 CSRF** sur toute requête POST du navigateur, car le proxy nginx envoie `Host: api` |
-| `CSRF_TRUSTED_ORIGINS` | oui | Origine **propre** de l'API (repli hors Render) ; l'originale du front vient de `FRONTEND_ORIGIN` |
+| `ALLOWED_HOSTS` | non (sur Render) | Hôtes de l'API. Sur Render, `RENDER_EXTERNAL_HOSTNAME` (suffixé ou non) fournit l'hôte réel à l'exécution : **ne rien déclarer dans le blueprint**, le sous-domaine deviné à l'avance serait faux. À renseigner manuellement hors Render |
+| `FRONTEND_ORIGIN` | oui (`sync: false`) | Origine de l'interface, ex. `https://simbiomed-frontend.onrender.com` — alimente à la fois `CORS_ALLOWED_ORIGINS` et `CSRF_TRUSTED_ORIGINS` (`config/settings/origins.py`). Sans elle : **403 CSRF** sur toute requête POST du navigateur, car le proxy nginx envoie `Host: api` |
+| `CSRF_TRUSTED_ORIGINS` | non (sur Render) | Origine **propre** de l'API : dérivée automatiquement de `RENDER_EXTERNAL_HOSTNAME`. À renseigner manuellement hors Render. L'origine du front vient de `FRONTEND_ORIGIN` |
 | `DATABASE_URL` | oui* | `postgresql://USER:PASSWORD@HOST:5432/postgres?sslmode=require` — **pooler Supabase en mode SESSION, jamais Transaction** (le mode Transaction casse les prepared statements de Django) |
 | `REDIS_URL` | oui | Broker Celery ; renseigné **automatiquement** par le blueprint via `fromService` (Key Value) |
 | `CORS_ALLOWED_ORIGINS` | non | Origines CORS supplémentaires, en plus de `FRONTEND_ORIGIN` |
@@ -86,12 +86,12 @@ Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
    Londres). **La région est figée après la première création** — ne pas la
    modifier au prix d'une latence de ~150 ms par aller-retour.
 3. **API** : *New Blueprint* sur le dépôt backend, garder `render.yaml`.
-   - Renseigner **`DATABASE_URL` seule** (marquée `sync: false`) — jamais dans
-     le dépôt. `REDIS_URL`, `DJANGO_SECRET_KEY` sont produits par le blueprint.
-   - `ALLOWED_HOSTS` et l'origine propre de l'API sont complétés
-     automatiquement via `RENDER_EXTERNAL_HOSTNAME`. Seule variable à ajuster
-     manuellement si Render suffixe le sous-domaine du front :
-     `FRONTEND_ORIGIN`.
+   - Deux variables `sync: false` sont demandées à la création :
+     `DATABASE_URL` (jamais dans le dépôt) et `FRONTEND_ORIGIN` (provisoire,
+     à corriger après la création du front). `DJANGO_SECRET_KEY` est généré.
+   - `ALLOWED_HOSTS` et `CSRF_TRUSTED_ORIGINS` ne sont **pas** déclarés :
+     `RENDER_EXTERNAL_HOSTNAME`, suffixé ou non, les fournit à l'exécution.
+   - `REDIS_URL` (blueprint complet) vient du Key Value via `fromService`.
    - Le premier démarrage exécute `migrate` puis `collectstatic`. Les
      tout premiers health checks peuvent renvoyer `503` pendant le
      réchauffement du pool de connexions : c'est transitoire (≈ 1 min).
@@ -101,8 +101,10 @@ Les fichiers `Dockerfile` et `docker-compose.yml` restent réservés au
    (`ipAllowList: []` = réseau privé, `maxmemoryPolicy: noeviction`).
 5. **Frontend** : *New Blueprint* sur le dépôt frontend, garder `render.yaml`,
    renseigner `API_UPSTREAM` avec l'URL de l'API (même région → 2 ms).
-6. **Compte initial** : console du service API →
-   `python manage.py createsuperuser`, puis approuver les demandes d'accès
+6. **Compte initial** : `python manage.py createsuperuser` depuis la
+   console du service API — ou **depuis une machine locale** si le service
+   est gratuit (pas de console sur le tier gratuit) avec `DATABASE_URL`
+   pointant sur la base de production. Puis approuver les demandes d'accès
    depuis l'interface (cloisonnement par établissement, RB-*).
 
 ### Vérification post-déploiement
@@ -136,17 +138,29 @@ Pour un essai sans budget : deux services web gratuits + base Supabase.
    `render.yaml` : basculer temporairement avec
    `git mv render.yaml render.full.yaml && git mv render.free.yaml render.yaml`,
    puis inverser au moment de passer au complet).
-3. Renseigner `DATABASE_URL` (marqué `sync: false`) — à saisir dans le
-   dashboard Render, **jamais** dans le dépôt.
+3. Le blueprint demande deux valeurs (`sync: false`) :
+   - `DATABASE_URL` : l'URL Supabase en mode **Pooler SESSION** — jamais dans
+     le dépôt ;
+   - `FRONTEND_ORIGIN` : provisoire (le front n'existe pas encore), par
+     exemple `https://a-remplacer.onrender.com`.
 4. **Frontend** → *New Blueprint* sur `SIM-BIOMED-frontend`, garder
-   `render.yaml`, vérifier `API_UPSTREAM = https://SIMBIOMED-API.onrender.com`.
-5. Après le premier déploiement : console du service `api` →
-   `python manage.py createsuperuser`.
-6. Vérifications : `curl -fsS https://API/api/healthz/`, puis la connexion réelle
+   `render.yaml`. Le blueprint demande `API_UPSTREAM` : coller l'URL réelle de
+   l'API copiée dans le dashboard (sans `/api`, sans slash final).
+5. Retour sur le service `api` → *Environment* → corriger `FRONTEND_ORIGIN`
+   avec l'URL réelle du front → *Save*. `sync: false` fait que le prochain
+   sync du blueprint ne reprend pas la main dessus.
+6. `createsuperuser` : sans console sur le tier gratuit, exécuter localement
+   avec `DATABASE_URL` sur la base de production :
+   `DJANGO_SETTINGS_MODULE=config.settings.production DATABASE_URL=… \
+   python manage.py createsuperuser`.
+7. Vérifications : `curl -fsS https://API/api/healthz/`, puis la connexion réelle
    depuis l'interface (un **403 « Vérification CSRF a échoué »** au login signale
    que `FRONTEND_ORIGIN` pointe vers le mauvais domaine).
 
 ### Tâches Celery à la main (pas de beat en gratuit)
+
+Exécuter **depuis une machine locale** (les services gratuits n'ont pas de
+console) :
 
 ```bash
 python manage.py shell -c "from apps.preventive.tasks import check_overdue_maintenance as f; print(f())"
@@ -169,7 +183,8 @@ python manage.py shell -c "from apps.preventive.tasks import generate_preventive
 docker build -f Dockerfile.prod -t simbiomed-api .          # backend
 docker build -f Dockerfile.prod -t simbiomed-frontend .     # frontend
 
-# Console / maintenance (Web Shell de la plateforme)
+# Console / maintenance (Web Shell — absente du tier gratuit :
+# exécuter localement avec DATABASE_URL sur la base de production)
 python manage.py migrate
 python manage.py createsuperuser
 python manage.py collectstatic --noinput
